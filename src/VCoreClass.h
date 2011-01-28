@@ -11,7 +11,7 @@
 #include <ClientConnection.h>
 #include <VCoreConfigOptions.h>
 #include <VCoreBuildDefs.h>
-
+#include <VCoreLogger.h>
 
 
 //-------------------- Class Definition ----------------------
@@ -20,6 +20,8 @@ class VCore
 protected:
 	ClientConnection	m_connections [VCORE_MAX_CONN_CLIENTS];	
 	VCoreConfigOptions	m_cfg;
+	VCoreLogger			m_logger;
+	bool				m_bPleaseStop; // set from outside to indicate stop request
 public:
 	VCore	();
 	~VCore	();

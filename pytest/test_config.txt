@@ -1,0 +1,4 @@
+server.listen_port=80
+
+
+logger.address=inproc://vcore_logger

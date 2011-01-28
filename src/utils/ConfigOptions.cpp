@@ -54,3 +54,7 @@ int	ConfigOptions::OnReadDone	()
 	return 0;
 }
 
+const char* ConfigOptions::GetLastError	()
+{
+	return m_szLastError;
+}

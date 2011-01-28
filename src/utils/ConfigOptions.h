@@ -52,7 +52,7 @@ public:
 	int			FindItem		(const char* szItemName);
 	int			GetInt			(const char* szItemName, int* pnValue);
 	const char* GetString		(const char* szItemName);
-
+	const char* GetLastError	();
 public:
 	virtual	int	OnReadDone	();
 };
