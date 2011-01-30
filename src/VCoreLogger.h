@@ -18,6 +18,7 @@ class VCoreLogger : public SocketReactor
 {
 protected:
 	VCoreConfigOptions*	m_pConfigOptions;
+	ReactorEndpoint*	m_pServerEP;
 public:
 	VCoreLogger ();
 public:

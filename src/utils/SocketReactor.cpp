@@ -21,3 +21,10 @@ int	SocketReactor::Stop	()
 {
 	return 0;
 }
+
+
+int	SocketReactor::AddEndpoint		(ReactorEndpoint* pEndpoint)
+{
+	return 0;
+}
+

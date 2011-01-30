@@ -14,8 +14,12 @@
 class SocketReactor : public OS_Thread
 {
 protected:
+	char			m_szLastError [OS_ERROR_MESSAGE_LENGTH];
+
 public:
-	int		Stop	();
+	int			AddEndpoint		(ReactorEndpoint* pEndpoint);
+	int			Stop			();
+	const char*	GetLastError	() { return m_szLastError; }
 public:
 	virtual	int	Run	();
 };

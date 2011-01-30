@@ -227,6 +227,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\utils\ReactorEndpoint.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\utils\ReactorEndpoint.h"
 					>
 				</File>

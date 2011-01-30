@@ -21,21 +21,22 @@ int		VCoreLogger::Init	(VCoreConfigOptions* pOptions)
 	// obtain logger address from config
 	const char* szLoggerAddress = pOptions->GetString ("logger.address");
 	// temp only
-	szLoggerAddress = "inproc://vcore_logger";
-	OS_Assert (szLoggerAddress!=NULL);
+	szLoggerAddress = "tcp://localhost:5555";
+	OS_AssertMsg ((szLoggerAddress!=NULL), "logger.address missing from config");
 
-	// the code below is an attempt to break the 0mq dependency
-	// init zmq socket for SUB (sink)
-	//m_pZmqContext = zmq_init (1);
-	//OS_Assert (m_pZmqContext != NULL);
+	m_pServerEP = new ReactorEndpoint ();
+	OS_AssertMsg ((m_pServerEP!=NULL), "Out of memory");
 
-	//m_pRecvSocket = zmq_socket (m_pZmqContext, ZMQ_SUB);
-	//OS_Assert (m_pRecvSocket != NULL);
+	int rc = m_pServerEP->Init (szLoggerAddress, ReactorEndpoint::EPTYPE_SERVER);
+	OS_AssertMsg ((rc >= 0), m_pServerEP->GetLastError ());
 
-	//int rc = zmq_bind (m_pRecvSocket, szLoggerAddress);
-	//OS_Assert (rc >= 0);
+	rc = this->AddEndpoint (m_pServerEP);
+	OS_AssertMsg ((rc >= 0), this->GetLastError ());
+	
 
 	return 0;
 }
+
+
 
 
