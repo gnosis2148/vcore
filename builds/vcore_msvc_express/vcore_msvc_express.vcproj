@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../src;../../include;../../src/utils;../../src/osal/include"
+				AdditionalIncludeDirectories="../../src;../../include;../../src/utils;../../src/osal/include;../../../zeromq/include"
 				PreprocessorDefinitions="DLL_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -59,7 +59,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="libzmq.lib"
 				OutputFile="..\..\lib\vcore.dll"
+				AdditionalLibraryDirectories="..\..\..\zeromq\lib"
 				GenerateDebugInformation="true"
 				TargetMachine="1"
 			/>
@@ -83,6 +85,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="xcopy ..\..\lib\vcore.dll c:\windows\system32 /Y"
 			/>
 		</Configuration>
 		<Configuration
@@ -213,6 +216,26 @@
 				</File>
 				<File
 					RelativePath="..\..\src\utils\ConfigOptions.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\utils\DataQueue.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\utils\DataQueue.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\utils\ReactorEndpoint.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\utils\SocketReactor.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\utils\SocketReactor.h"
 					>
 				</File>
 			</Filter>

@@ -50,9 +50,10 @@ int	OS_Thread::Start	()
 
 	return 0;
 }
-
+/*
 int	OS_Thread::Stop	(bool bWait)
 {
 	bWait;
 	return 0;
 }
+*/

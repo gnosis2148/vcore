@@ -10,12 +10,11 @@
 //-------------------- Include files -------------------------
 #include <VCoreConfigOptions.h>
 #include <VCoreBuildDefs.h>
-#include <OS_Thread.h>
-
+#include <SocketReactor.h>
 
 //-------------------- Class Definition ----------------------
 
-class VCoreLogger : public OS_Thread
+class VCoreLogger : public SocketReactor
 {
 protected:
 	VCoreConfigOptions*	m_pConfigOptions;
@@ -24,7 +23,6 @@ public:
 public:
 	int		Init	(VCoreConfigOptions* pOptions);
 public:
-	virtual int	Run	();
 };
 
 

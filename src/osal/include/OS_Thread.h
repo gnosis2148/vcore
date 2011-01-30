@@ -33,7 +33,6 @@ public:
 
 public:
 	int		Start	();
-	int		Stop	(bool bWait);
 public:
 	virtual	int		Run	() = 0;
 

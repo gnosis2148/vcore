@@ -40,27 +40,6 @@ int		VCore::Init	(const char* szConfigFileName)
 	return 0;
 }
 
-int		VCore::Start	()
-{
-	m_bPleaseStop = false;
-	int rc;
-	//fd_set fdr, fdw, fde;
-
-	//rc = PrepareSets (&fdr, &fdw, &fde);
-	OS_Assert(rc!=0);
-
-	while (!m_bPleaseStop)
-	{
-		//int nSelRet = VCoreSelect (&fdr, &fdw, &fde);
-	}
-
-	return 0;
-}
-
-int		VCore::Stop	()
-{
-	return 0;
-}
 
 VCoreConfigOptions&	VCore::GetConfigOptions	()
 {

@@ -1,20 +1,23 @@
 /*----------------------------------------------------------*
 
-	ClientConnection.cpp
+	SocketReactor.cpp
+	
 
 *-----------------------------------------------------------*/
 
 //-------------------- Include files -------------------------
-#include <ClientConnection.h>
+#include <OS_Assert.h>
+#include <SocketReactor.h>
 
 
 //-------------------- Implementation ------------------------
-ClientConnection::ClientConnection	()
+int	SocketReactor::Run	()
 {
+	return 0;
 }
 
 
-ClientConnection::~ClientConnection	()
+int	SocketReactor::Stop	()
 {
+	return 0;
 }
-
