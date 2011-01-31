@@ -12,10 +12,9 @@
 #include <OS_Assert.h>
 #include <DataQueue.h>
 //-------------------- Constants and Definitions -------------
-#ifndef REACTOR_ENDPOINT_MAX_ADDRESS_LENGTH
 #define REACTOR_ENDPOINT_MAX_ADDRESS_LENGTH	256
-#endif
-
+#define REACTOR_ENDPOINT_MAX_TRANSPORT_NAME_LENGTH 8
+#define REACTOR_ENDPOINT_MAX_PORT_NUM_LENGTH 8
 //-------------------- Class Definition ----------------------
 class ReactorEndpoint
 {
@@ -45,6 +44,8 @@ public: //------------- methods ---------------
 public:
 	int			Init			(const char* szAddress, EndpointType epType); // alloc the data queue
 	const char*	GetLastError	() { return m_szLastError; }
+protected:
+	int		ParseAddress		(const char* szAddress, EndpointType epType);
 };
 
 

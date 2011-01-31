@@ -235,6 +235,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\utils\SimpleParser.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\utils\SimpleParser.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\utils\SocketReactor.cpp"
 					>
 				</File>
