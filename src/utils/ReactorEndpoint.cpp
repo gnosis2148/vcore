@@ -15,6 +15,9 @@ ReactorEndpoint::ReactorEndpoint	(const char* szAddress, EndpointType epType)
 {
 	int rc = ParseAddress (szAddress, epType);
 	OS_Abort_If ((rc<0));
+
+	m_type = epType;
+	m_bAutoReconnect = (m_type == ReactorEndpoint::EPTYPE_CLIENT);
 }
 
 bool	ReactorEndpoint::NeedsRead		()
@@ -40,7 +43,8 @@ int	ReactorEndpoint::Init		() // alloc the data queue
 	OS_Abort_If ((rc<0));
 
 	// prepare the socket
-
+	m_pSock = OS_CreateSocket ();
+	rc = m_pSock->Init (m_szHostname, m_nPortNum);
 
 	return 0;
 }

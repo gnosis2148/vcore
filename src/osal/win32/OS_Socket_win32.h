@@ -11,9 +11,14 @@
 //-------------------- Include files -------------------------
 
 #include <OS_Socket.h>
-
+#include <winsock2.h>
 class OS_SocketWin32 : public OS_Socket
 {
+protected:
+	SOCKET	m_sock;
+public:
+	virtual int		Bind	();
+
 };
 
 

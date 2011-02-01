@@ -9,6 +9,7 @@
 
 //-------------------- Include files -------------------------
 #include <OS_Thread.h>
+#include <OS_Platform.h>
 #include <OS_Assert.h>
 #include <DataQueue.h>
 //-------------------- Constants and Definitions -------------
@@ -27,7 +28,7 @@ public:
 		EPTYPE_SERVER_CLIENT
 	} EndpointType;
 protected:
-	int				fd;
+	OS_Socket*		m_pSock;
 	EndpointType	m_type;
 	DataQueue		m_sendQueue;
 	DataQueue		m_recvQueue;
@@ -35,7 +36,7 @@ protected:
 
 	int				m_nPortNum;
 	char			m_szLastError [OS_ERROR_MESSAGE_LENGTH];
-public: //------------- config options --------
+protected: //------------- config options --------
 	int		m_nSendQueueSize;
 	int		m_nRecvQueueSize;
 	bool	m_bAutoReconnect;
@@ -43,10 +44,12 @@ public: //------------- config options --------
 public: //------------- methods ---------------
 	ReactorEndpoint	(const char* szAddress, EndpointType epType);
 public:
-	int			Init			(); // alloc the data queue
-	const char*	GetLastError	() { return m_szLastError; }
-	bool		NeedsRead		();
-	bool		NeedsWrite		();
+	int				Init			(); // alloc the data queue
+	const char*		GetLastError	() { return m_szLastError; }
+	bool			NeedsRead		();
+	bool			NeedsWrite		();
+	EndpointType	GetType			() { return m_type; }
+	OS_Socket*		GetSocket		() { return m_pSock; }
 protected:
 	int		ParseAddress		(const char* szAddress, EndpointType epType);
 };

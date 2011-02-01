@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../../src;../../include;../../src/utils;../../src/osal/include;../../../zeromq/include;../../src/stlport;../../src/osal"
-				PreprocessorDefinitions="DLL_EXPORT,_STLP_NO_EXCEPTIONS"
+				PreprocessorDefinitions="DLL_EXPORT,_STLP_NO_EXCEPTIONS,_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -271,6 +271,10 @@
 					>
 					<File
 						RelativePath="..\..\src\osal\win32\OS_Platform_win32.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\osal\win32\OS_Socket_win32.cpp"
 						>
 					</File>
 					<File

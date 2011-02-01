@@ -36,10 +36,14 @@ int	SocketReactor::Run	()
 
 int	SocketReactor::UpdateFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts)
 {
-	std::list<ReactorEndpoint*>::const_iterator it = m_serverEndpoints.begin ();
-	while (it != m_serverEndpoints.end ())
+	std::list<ReactorEndpoint*>::const_iterator it = m_endpoints.begin ();
+	while (it != m_endpoints.end ())
 	{
 		ReactorEndpoint* pEP = *it;
+		if (pEP->GetType () == ReactorEndpoint::EPTYPE_SERVER)
+		{
+
+		}
 		*it++;
 	}
 	return 0;
@@ -54,7 +58,15 @@ int	SocketReactor::Stop	()
 
 int	SocketReactor::AddEndpoint		(ReactorEndpoint* pEndpoint)
 {
-	m_serverEndpoints.push_back (pEndpoint);
+	pEndpoint->m_nRecvQueueSize = m_nRecvQueueSize;
+	pEndpoint->m_nSendQueueSize = m_nSendQueueSize;
+	pEndpoint->Init ();
+	if (pEndpoint->GetType () == ReactorEndpoint::EPTYPE_SERVER)
+	{
+		pEndpoint->GetSocket()->Bind ();
+	}
+	m_endpoints.push_back (pEndpoint);
+
 	return 0;
 }
 
