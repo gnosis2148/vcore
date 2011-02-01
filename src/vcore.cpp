@@ -12,6 +12,8 @@ static VCore	theVCore;
 
 VCORE_EXPORT	int		vcore_init			(const char* szConfigFileName)
 {
+	int rc = OS_PlatformInit ();
+	OS_Abort_If ((rc<0));
 	return theVCore.Init (szConfigFileName);
 }
 

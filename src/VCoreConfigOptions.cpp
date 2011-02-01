@@ -12,7 +12,13 @@
 
 VCoreConfigOptions::VCoreConfigOptions	()
 {
+	// ----------- server config and defaults ----------
 	RegisterInt ("server.listen_port", 80);
+	RegisterInt ("server.reactor_queue_size_send", 32768);
+	RegisterInt ("server.reactor_queue_size_recv", 32768);
+
+
+	// ----------- --------------------------------------
 }
 
 int	VCoreConfigOptions::OnReadDone	()

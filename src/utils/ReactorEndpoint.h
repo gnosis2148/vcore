@@ -18,6 +18,7 @@
 //-------------------- Class Definition ----------------------
 class ReactorEndpoint
 {
+	friend class SocketReactor;
 public:
 	typedef enum
 	{
@@ -31,19 +32,21 @@ protected:
 	DataQueue		m_sendQueue;
 	DataQueue		m_recvQueue;
 	char			m_szHostname [REACTOR_ENDPOINT_MAX_ADDRESS_LENGTH];
+
 	int				m_nPortNum;
 	char			m_szLastError [OS_ERROR_MESSAGE_LENGTH];
-
 public: //------------- config options --------
 	int		m_nSendQueueSize;
 	int		m_nRecvQueueSize;
 	bool	m_bAutoReconnect;
 
 public: //------------- methods ---------------
-	ReactorEndpoint	();
+	ReactorEndpoint	(const char* szAddress, EndpointType epType);
 public:
-	int			Init			(const char* szAddress, EndpointType epType); // alloc the data queue
+	int			Init			(); // alloc the data queue
 	const char*	GetLastError	() { return m_szLastError; }
+	bool		NeedsRead		();
+	bool		NeedsWrite		();
 protected:
 	int		ParseAddress		(const char* szAddress, EndpointType epType);
 };

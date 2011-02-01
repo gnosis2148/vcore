@@ -40,8 +40,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../src;../../include;../../src/utils;../../src/osal/include;../../../zeromq/include"
-				PreprocessorDefinitions="DLL_EXPORT"
+				AdditionalIncludeDirectories="../../src;../../include;../../src/utils;../../src/osal/include;../../../zeromq/include;../../src/stlport;../../src/osal"
+				PreprocessorDefinitions="DLL_EXPORT,_STLP_NO_EXCEPTIONS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -168,14 +168,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\..\src\ClientConnection.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\ClientConnection.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\vcore.cpp"
 				>
 			</File>
@@ -259,12 +251,32 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\osal\include\OS_Platform.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\osal\OS_Socket.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\osal\include\OS_Socket.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\osal\include\OS_Thread.h"
 					>
 				</File>
 				<Filter
 					Name="win32"
 					>
+					<File
+						RelativePath="..\..\src\osal\win32\OS_Platform_win32.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\src\osal\win32\OS_Socket_win32.h"
+						>
+					</File>
 					<File
 						RelativePath="..\..\src\osal\win32\OS_Thread_win32.cpp"
 						>

@@ -11,14 +11,36 @@
 //-------------------- Constants and Definitions -------------
 
 //-------------------- Implementation -------------------------
-ReactorEndpoint::ReactorEndpoint	()
-{
-}
-
-int	ReactorEndpoint::Init		(const char* szAddress, EndpointType epType) // alloc the data queue
+ReactorEndpoint::ReactorEndpoint	(const char* szAddress, EndpointType epType)
 {
 	int rc = ParseAddress (szAddress, epType);
-	OS_Abort_If (rc<0);
+	OS_Abort_If ((rc<0));
+}
+
+bool	ReactorEndpoint::NeedsRead		()
+{
+	if (this->m_type == ReactorEndpoint::EPTYPE_SERVER)
+		return true;
+	return false;
+}
+
+bool	ReactorEndpoint::NeedsWrite		()
+{
+	return false;
+}
+
+
+int	ReactorEndpoint::Init		() // alloc the data queue
+{
+	int rc;
+	rc = m_sendQueue.AllocateMemory (m_nSendQueueSize);
+	OS_Abort_If ((rc<0));
+
+	rc = m_recvQueue.AllocateMemory (m_nRecvQueueSize);
+	OS_Abort_If ((rc<0));
+
+	// prepare the socket
+
 
 	return 0;
 }
