@@ -44,12 +44,12 @@ void*	DataQueue::Read					(int nBytes)
 	return 0;
 }
 
-int		DataQueue::GetTakenSizeBytes	()
+int		DataQueue::GetByteCount	()
 {
 	return 0;
 }
 
-int		DataQueue::GetFreeSizeBytes		()
+int		DataQueue::GetFreeByteCount		()
 {
 	return 0;
 }

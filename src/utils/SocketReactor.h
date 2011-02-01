@@ -20,7 +20,6 @@ class SocketReactor : public OS_Thread
 {
 protected:
 	char								m_szLastError [OS_ERROR_MESSAGE_LENGTH];
-	//std::list<ReactorEndpoint*>			m_serverEndpoints;
 	std::list<ReactorEndpoint*>			m_endpoints;
 	//---------- config options ------------
 	int	m_nSendQueueSize, m_nRecvQueueSize;

@@ -25,6 +25,7 @@ public:
 static DWORD WINAPI GlobalThreadProc (void* pParam)
 {
 	OS_Thread* pThread = (OS_Thread*)pParam;
+	pThread->OnStart ();
 	return (DWORD)(pThread->Run ());
 }
 
@@ -40,7 +41,7 @@ int	OS_Thread::Start	()
 		return -1;
 	}
 
-	
+	m_pThreadObject = pInfo;
 	pInfo->m_hThreadHandle = CreateThread (NULL, 0, GlobalThreadProc, this, 0, &pInfo->m_dwThreadID);
 	if (pInfo->m_hThreadHandle == NULL)
 	{
@@ -50,6 +51,14 @@ int	OS_Thread::Start	()
 
 	return 0;
 }
+
+int		OS_Thread::Join	()
+{
+	ThreadInfo* pInfo = (ThreadInfo*)(m_pThreadObject);
+	return WaitForSingleObject (pInfo->m_hThreadHandle, INFINITE);
+}
+
+
 /*
 int	OS_Thread::Stop	(bool bWait)
 {

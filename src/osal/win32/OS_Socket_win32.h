@@ -17,7 +17,10 @@ class OS_SocketWin32 : public OS_Socket
 protected:
 	SOCKET	m_sock;
 public:
-	virtual int		Bind	();
+	virtual int		Bind		(int nMaxConnections);
+	virtual	int		AddToSet	(void* pSet);
+	virtual int		Connect		();
+	virtual int		Create		();
 
 };
 

@@ -9,27 +9,76 @@
 //-------------------- Include files -------------------------
 #include <win32/OS_Socket_win32.h>
 
-int	OS_SocketWin32::Bind	()
+int	OS_SocketWin32::Create		()
 {
+	m_sock = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if (m_sock < 0)
+		return -1;
+	return 0;
+}
+
+
+
+int	OS_SocketWin32::Bind	(int nMaxConnections)
+{
+	m_bIsValid = false;
 	SOCKADDR_IN serverInfo;
 	serverInfo.sin_family = AF_INET;
 	serverInfo.sin_addr.s_addr = INADDR_ANY;	// Since this socket is listening for connections,
 							// any local address will do
-	serverInfo.sin_port = htons(8888);		// Convert integer 8888 to network-byte order
+	serverInfo.sin_port = htons(m_nDestPortNum);		// Convert integer 8888 to network-byte order
 							// and insert into the port field
 
 	// Bind the socket to our local server address
 	int nret = bind(m_sock, (LPSOCKADDR)&serverInfo, sizeof(struct sockaddr));
-
+	if (nret == SOCKET_ERROR)
+	{
+		nret = WSAGetLastError();
+		return -1;
+	}
+	
+	int val = 1;
+	nret = setsockopt (m_sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&val, sizeof(val));
 	if (nret == SOCKET_ERROR)
 	{
 		nret = WSAGetLastError();
 		return -1;
 	}
 
+	nret = listen (m_sock, nMaxConnections);
+	if (nret == SOCKET_ERROR)
+	{
+		nret = WSAGetLastError();
+		return -1;
+	}
+	m_bIsValid = true;
 	return 0;
 }
 
 
+int		OS_SocketWin32::AddToSet	(void* pSet)
+{
+	FD_SET* pset = (FD_SET*)pSet;
+	FD_SET (m_sock, pSet);
+	return 0;
+}
 
+int		OS_SocketWin32::Connect		()
+{
+	m_bIsValid = false;
+	SOCKADDR_IN serverInfo;
+	serverInfo.sin_family = AF_INET;
+	serverInfo.sin_addr.s_addr = inet_addr(m_szHostName);	// Since this socket is listening for connections,
+							// any local address will do
+	serverInfo.sin_port = htons(m_nDestPortNum);		// Convert integer 8888 to network-byte order
+							// and insert into the port field
+
+	// Bind the socket to our local server address
+	int nret = connect(m_sock, (LPSOCKADDR)&serverInfo, sizeof(serverInfo));
+
+	if (nret < 0)
+		return -1;
+	m_bIsValid = true;
+	return 0;
+}
 

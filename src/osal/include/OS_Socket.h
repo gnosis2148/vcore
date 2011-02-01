@@ -16,14 +16,22 @@ class	OS_Socket
 protected:
 	char	m_szHostName	[SOCKET_MAX_HOSTNAME_LEN];
 	int		m_nDestPortNum;
+	bool	m_bIsValid; // for server socket - if bound, for client socket - if connected
+
 protected:
 	OS_Socket	();
 public:
-	virtual	int		Init	(const char* szHostAddr, int nPortNum);
-	virtual	int		Bind	() = 0;
+	virtual	int		Init		(const char* szHostAddr, int nPortNum);
+	virtual	int		Bind		(int nMaxConnections) = 0;
+	virtual	int		AddToSet	(void* pSet) = 0;
+	virtual int		Connect		() = 0;
+	virtual int		Create		() = 0;
+public:
+	bool	IsValid			()	{ return m_bIsValid; }
 public:
 	~OS_Socket	();
-
+protected:
+	void	ResetState		();
 
 };
 

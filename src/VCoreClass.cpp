@@ -29,21 +29,21 @@ int		VCore::Init	(const char* szConfigFileName)
 		return -1;
 	}
 
-	rc = m_logger.Init (&m_cfg);
-	if (rc < 0)
-	{
-		OS_Fatal ("Could not init logger");
-		return -1;
-	}
-
-	m_logger.Start ();
+//	rc = m_logger.Init (&m_cfg);
+//	if (rc < 0)
+//	{
+//		OS_Fatal ("Could not init logger");
+//		return -1;
+//	}
+//
+//	m_logger.Start ();
 	return 0;
 }
 
 
-VCoreConfigOptions&	VCore::GetConfigOptions	()
+VCoreConfigOptions*	VCore::GetConfigOptions	()
 {
-	return m_cfg;
+	return &m_cfg;
 }
 
 int	VCore::GetVersion			(int* pnMajor, int* pnMinor)

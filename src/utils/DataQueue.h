@@ -26,8 +26,8 @@ public:
 	int		AllocateMemory		(int nSizeBytes);
 	int		Write				(void* pData, int nDataSizeBytes);
 	void*	Read				(int nBytes);
-	int		GetTakenSizeBytes	();
-	int		GetFreeSizeBytes	();
+	int		GetByteCount		();
+	int		GetFreeByteCount	();
 };
 
 #endif // _DATA_QUEUE_H_

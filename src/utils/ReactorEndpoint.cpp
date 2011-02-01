@@ -13,6 +13,7 @@
 //-------------------- Implementation -------------------------
 ReactorEndpoint::ReactorEndpoint	(const char* szAddress, EndpointType epType)
 {
+	m_nMaxConnections = 32;
 	int rc = ParseAddress (szAddress, epType);
 	OS_Abort_If ((rc<0));
 
@@ -45,7 +46,8 @@ int	ReactorEndpoint::Init		() // alloc the data queue
 	// prepare the socket
 	m_pSock = OS_CreateSocket ();
 	rc = m_pSock->Init (m_szHostname, m_nPortNum);
-
+	rc = m_pSock->Create ();
+	m_bAutoReconnect = true;
 	return 0;
 }
 
@@ -71,4 +73,10 @@ int	ReactorEndpoint::ParseAddress		(const char* szAddress, EndpointType epType)
 	return 0;
 }
 
+bool	ReactorEndpoint::ShouldReconnect	()
+{
+	if (m_type == ReactorEndpoint::EPTYPE_CLIENT)
+		return m_bAutoReconnect;
+	return false;
+}
 

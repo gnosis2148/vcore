@@ -33,9 +33,11 @@ public:
 
 public:
 	int		Start	();
+	int		Join	();
 public:
-	virtual	int		Run	() = 0;
-
+	virtual	int		Run		() = 0;
+	virtual	int		OnStart	() {return 0; }
+	virtual int		OnStop	() {return 0; }
 };
 
 

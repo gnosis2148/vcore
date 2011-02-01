@@ -40,7 +40,7 @@ protected: //------------- config options --------
 	int		m_nSendQueueSize;
 	int		m_nRecvQueueSize;
 	bool	m_bAutoReconnect;
-
+	int		m_nMaxConnections; // for server EP's only
 public: //------------- methods ---------------
 	ReactorEndpoint	(const char* szAddress, EndpointType epType);
 public:
@@ -50,6 +50,7 @@ public:
 	bool			NeedsWrite		();
 	EndpointType	GetType			() { return m_type; }
 	OS_Socket*		GetSocket		() { return m_pSock; }
+	bool			ShouldReconnect	();
 protected:
 	int		ParseAddress		(const char* szAddress, EndpointType epType);
 };

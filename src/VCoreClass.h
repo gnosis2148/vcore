@@ -19,7 +19,6 @@ class VCore : public SocketReactor
 {
 protected:
 	VCoreConfigOptions	m_cfg;
-	VCoreLogger			m_logger;
 	
 	bool				m_bPleaseStop; // set from outside to indicate stop request
 public:
@@ -29,7 +28,7 @@ public:
 //----- the public DLL API maps to these class methods
 	int		Init	(const char* szConfigFileName);
 	
-	VCoreConfigOptions&	GetConfigOptions	();
+	VCoreConfigOptions*	GetConfigOptions	();
 	int					GetVersion			(int* pnMajor, int* pnMinor);
 
 };
