@@ -34,8 +34,13 @@ public:
 	virtual	int	Run	();
 
 protected:
-	int	UpdateFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts);
+	int	UpdateFdSets		(fd_set* reads, fd_set* writes, fd_set* excepts);
+	int	ProcessFdSets		(fd_set* reads, fd_set* writes, fd_set* excepts);
 
+	int	HandleError			(ReactorEndpoint* pEP);
+	int	HandleNewConnection	(ReactorEndpoint* pEP);
+	int	HandleRead			(ReactorEndpoint* pEP);
+	int	HandleWrite			(ReactorEndpoint* pEP);
 //----------- Overridables -----------------------
 protected: 
 	int	OnConnect	(ReactorEndpoint* pOriginatorEP, ReactorEndpoint* pNewEP);

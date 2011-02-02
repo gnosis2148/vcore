@@ -63,6 +63,13 @@ int		OS_SocketWin32::AddToSet	(void* pSet)
 	return 0;
 }
 
+bool	OS_SocketWin32::IsInSet		(void* pSet)
+{
+	FD_SET* pset = (FD_SET*)pSet;
+	return FD_ISSET (m_sock, pset);
+}
+
+
 int		OS_SocketWin32::Connect		()
 {
 	m_bIsValid = false;
@@ -80,5 +87,25 @@ int		OS_SocketWin32::Connect		()
 		return -1;
 	m_bIsValid = true;
 	return 0;
+}
+
+int		OS_SocketWin32::Close		()
+{
+	closesocket (m_sock);
+	ResetState ();
+	return 0;
+}
+
+
+OS_Socket*	OS_SocketWin32::Accept		()
+{
+	OS_SocketWin32* pNewSock = new OS_SocketWin32 ();
+	pNewSock->m_sock = accept (m_sock, NULL, NULL);
+	if (pNewSock->m_sock < 0)
+	{
+		delete pNewSock;
+		return NULL;
+	}
+	return pNewSock;
 }
 

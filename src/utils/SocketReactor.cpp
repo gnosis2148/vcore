@@ -35,9 +35,47 @@ int	SocketReactor::Run	()
 		OS_Abort_If ((rc<0));
 		
 		nSockCount = select (0, &reads, &writes, &excepts, NULL);
+
+		rc = ProcessFdSets (&reads, &writes, &excepts);
 	}
 	return 0;
 }
+
+int	SocketReactor::ProcessFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts)
+{
+	int rc;
+	std::list<ReactorEndpoint*>::const_iterator it = m_endpoints.begin ();
+	while (it != m_endpoints.end ())
+	{
+		ReactorEndpoint* pEP = *it;
+		if (pEP->GetSocket()->IsInSet (excepts))
+		{
+			HandleError (pEP);
+		}
+		else // reads or writes
+		{
+			if (pEP->GetType () == ReactorEndpoint::EPTYPE_SERVER)
+			{
+				if (pEP->GetSocket()->IsInSet (reads)) // new connection
+				{
+					HandleNewConnection (pEP);
+				}
+
+			}
+			else
+			{
+				if (pEP->GetSocket()->IsInSet (reads))
+					HandleRead (pEP);
+				if (pEP->GetSocket()->IsInSet (writes))
+					HandleWrite (pEP);
+			}
+		} // else: reads or writes
+		*it++;
+	}
+	return 0;
+}
+
+
 
 int	SocketReactor::UpdateFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts)
 {
@@ -46,7 +84,7 @@ int	SocketReactor::UpdateFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts)
 	FD_ZERO (excepts);
 
 	int rc;
-	std::list<ReactorEndpoint*>::const_iterator it = m_endpoints.begin ();
+	std::list<ReactorEndpoint*>::iterator it = m_endpoints.begin ();
 	while (it != m_endpoints.end ())
 	{
 		ReactorEndpoint* pEP = *it;
@@ -101,6 +139,46 @@ int	SocketReactor::AddEndpoint		(ReactorEndpoint* pEndpoint)
 
 	return 0;
 }
+
+int	SocketReactor::HandleError			(ReactorEndpoint* pEP)
+{
+	if (pEP->GetType () == ReactorEndpoint::EPTYPE_SERVER_CLIENT)
+	{
+		pEP->Shutdown ();
+		m_endpoints.remove (pEP);
+		delete pEP;
+	}
+	else if (pEP->GetType () == ReactorEndpoint::EPTYPE_SERVER)
+	{
+		pEP->Reset ();
+	}
+	else if (pEP->GetType () == ReactorEndpoint::EPTYPE_CLIENT)
+	{
+		pEP->Reset ();
+	}
+
+	return 0;
+}
+
+int	SocketReactor::HandleNewConnection	(ReactorEndpoint* pEP)
+{
+	OS_Socket* pSock = pEP->GetSocket()->Accept();
+	ReactorEndpoint* pConn = new ReactorEndpoint (pSock);
+	OS_Abort_If ((pConn==NULL));
+	AddEndpoint (pConn);
+	return 0;
+}
+
+int	SocketReactor::HandleRead			(ReactorEndpoint* pEP)
+{
+	return 0;
+}
+
+int	SocketReactor::HandleWrite			(ReactorEndpoint* pEP)
+{
+	return 0;
+}
+
 
 int	SocketReactor::OnConnect	(ReactorEndpoint* pOriginatorEP, ReactorEndpoint* pNewEP)
 {

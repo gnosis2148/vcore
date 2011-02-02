@@ -17,10 +17,13 @@ class OS_SocketWin32 : public OS_Socket
 protected:
 	SOCKET	m_sock;
 public:
-	virtual int		Bind		(int nMaxConnections);
-	virtual	int		AddToSet	(void* pSet);
-	virtual int		Connect		();
-	virtual int		Create		();
+	virtual int			Bind		(int nMaxConnections);
+	virtual	int			AddToSet	(void* pSet);
+	virtual int			Connect		();
+	virtual int			Create		();
+	virtual bool		IsInSet		(void* pSet);
+	virtual int			Close		();
+	virtual OS_Socket*	Accept		();
 
 };
 

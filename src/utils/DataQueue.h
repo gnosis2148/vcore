@@ -23,6 +23,7 @@ public:
 	DataQueue	();
 	~DataQueue	();
 public:
+	int		Reset				();
 	int		AllocateMemory		(int nSizeBytes);
 	int		Write				(void* pData, int nDataSizeBytes);
 	void*	Read				(int nBytes);

@@ -21,6 +21,14 @@ ReactorEndpoint::ReactorEndpoint	(const char* szAddress, EndpointType epType)
 	m_bAutoReconnect = (m_type == ReactorEndpoint::EPTYPE_CLIENT);
 }
 
+ReactorEndpoint::ReactorEndpoint	(OS_Socket* pSock)
+{
+	m_pSock = pSock;
+	m_type = ReactorEndpoint::EPTYPE_SERVER_CLIENT;
+	m_bAutoReconnect = false;
+}
+
+
 bool	ReactorEndpoint::NeedsRead		()
 {
 	if (this->m_type == ReactorEndpoint::EPTYPE_SERVER)
@@ -44,12 +52,31 @@ int	ReactorEndpoint::Init		() // alloc the data queue
 	OS_Abort_If ((rc<0));
 
 	// prepare the socket
-	m_pSock = OS_CreateSocket ();
-	rc = m_pSock->Init (m_szHostname, m_nPortNum);
-	rc = m_pSock->Create ();
-	m_bAutoReconnect = true;
+	if (m_type != ReactorEndpoint::EPTYPE_SERVER_CLIENT)
+	{
+		m_pSock = OS_CreateSocket ();
+		rc = m_pSock->Init (m_szHostname, m_nPortNum);
+		rc = m_pSock->Create ();
+		m_bAutoReconnect = true;
+	}
 	return 0;
 }
+
+int	ReactorEndpoint::Shutdown		()
+{
+	m_pSock->Close ();
+	Reset ();
+	return 0;
+}
+
+int	ReactorEndpoint::Reset			() // reset state but keep the socket open
+{
+	m_recvQueue.Reset ();
+	m_sendQueue.Reset ();
+	m_pSock->ResetState ();
+	return 0;
+}
+
 
 int	ReactorEndpoint::ParseAddress		(const char* szAddress, EndpointType epType)
 {

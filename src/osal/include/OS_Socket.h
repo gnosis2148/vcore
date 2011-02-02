@@ -21,17 +21,20 @@ protected:
 protected:
 	OS_Socket	();
 public:
-	virtual	int		Init		(const char* szHostAddr, int nPortNum);
-	virtual	int		Bind		(int nMaxConnections) = 0;
-	virtual	int		AddToSet	(void* pSet) = 0;
-	virtual int		Connect		() = 0;
-	virtual int		Create		() = 0;
+	virtual	int			Init		(const char* szHostAddr, int nPortNum);
+	virtual	int			Bind		(int nMaxConnections) = 0;
+	virtual	int			AddToSet	(void* pSet) = 0;
+	virtual bool		IsInSet		(void* pSet) = 0;
+	virtual int			Connect		() = 0;
+	virtual int			Create		() = 0;
+	virtual int			Close		() = 0;
+	virtual OS_Socket*	Accept		() = 0;
 public:
 	bool	IsValid			()	{ return m_bIsValid; }
+	void	ResetState		();
 public:
 	~OS_Socket	();
 protected:
-	void	ResetState		();
 
 };
 

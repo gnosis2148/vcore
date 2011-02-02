@@ -43,8 +43,11 @@ protected: //------------- config options --------
 	int		m_nMaxConnections; // for server EP's only
 public: //------------- methods ---------------
 	ReactorEndpoint	(const char* szAddress, EndpointType epType);
+	ReactorEndpoint	(OS_Socket* pSock);
 public:
 	int				Init			(); // alloc the data queue
+	int				Shutdown		(); // close the socket
+	int				Reset			(); // reset state but keep the socket open
 	const char*		GetLastError	() { return m_szLastError; }
 	bool			NeedsRead		();
 	bool			NeedsWrite		();

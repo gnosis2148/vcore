@@ -24,9 +24,10 @@ int	OS_Socket::Init	(const char* szHostAddr, int nPortNum)
 	return 0;
 }
 
+
+
 void	OS_Socket::ResetState		()
 {
-	m_nDestPortNum = -1;
 	m_bIsValid = false;
 }
 

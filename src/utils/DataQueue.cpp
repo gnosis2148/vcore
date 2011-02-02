@@ -53,3 +53,8 @@ int		DataQueue::GetFreeByteCount		()
 {
 	return 0;
 }
+
+int		DataQueue::Reset				()
+{
+	return 0;
+}
