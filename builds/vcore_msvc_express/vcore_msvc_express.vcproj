@@ -59,7 +59,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libzmq.lib"
 				OutputFile="..\..\lib\vcore.dll"
 				AdditionalLibraryDirectories="..\..\..\zeromq\lib"
 				GenerateDebugInformation="true"
