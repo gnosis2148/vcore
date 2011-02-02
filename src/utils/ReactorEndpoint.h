@@ -56,6 +56,7 @@ public:
 	OS_Socket*		GetSocket		() { return m_pSock; }
 	bool			ShouldReconnect	();
 	int				Read			();
+	int				GetRecvData		(char** ppData, int* pnDataCount);
 protected:
 	int		ParseAddress		(const char* szAddress, EndpointType epType);
 };

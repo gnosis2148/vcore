@@ -37,15 +37,16 @@ protected:
 	int	UpdateFdSets		(fd_set* reads, fd_set* writes, fd_set* excepts);
 	int	ProcessFdSets		(fd_set* reads, fd_set* writes, fd_set* excepts);
 
-	int	HandleError			(ReactorEndpoint* pEP);
+	int	HandleError			(std::list<ReactorEndpoint*>::iterator& it, ReactorEndpoint* pEP);
 	int	HandleNewConnection	(ReactorEndpoint* pEP);
 	int	HandleRead			(ReactorEndpoint* pEP);
 	int	HandleWrite			(ReactorEndpoint* pEP);
 //----------- Overridables -----------------------
 protected: 
-	int	OnConnect	(ReactorEndpoint* pOriginatorEP, ReactorEndpoint* pNewEP);
-	int	OnReceive	(ReactorEndpoint* pOriginatorEP, ReactorEndpoint* pNewEP);
-	int	OnDisconnect(ReactorEndpoint* pOriginatorEP, ReactorEndpoint* pNewEP);
+	virtual int		OnConnect			(ReactorEndpoint* pOrigEP, ReactorEndpoint* pNewEP);
+	virtual bool	IsMessageComplete	(ReactorEndpoint* pOrigEP, char* pData, int* pnDataCountBytes);
+	virtual int		OnReceive			(ReactorEndpoint* pOrigEP, char* pData, int nDataCountBytes, bool bMessageComplete);
+	virtual int		OnDisconnect		(ReactorEndpoint* pOrigEP, ReactorEndpoint* pNewEP);
 };
 
 

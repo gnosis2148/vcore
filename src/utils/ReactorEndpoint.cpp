@@ -127,13 +127,20 @@ int		ReactorEndpoint::Read			()
 {
 	int nSpaceAvail = m_recvQueue.GetFreeContByteCount ();
 	int rc = m_pSock->Read (m_recvQueue.GetFreeArea (), nSpaceAvail);
-	if (rc < 0)
+	if (rc <= 0)
 	{
 		HandleError ();
 		return -1;
 	}
 
 	m_recvQueue.WriteDone (rc);
-	LOG_Debug "Read %d bytes from 0x%x rc=%d", nSpaceAvail, this, rc LOG_END;
+	LOG_Debug "Read %d bytes from 0x%x rc=%d", rc, this, rc LOG_END;
 	return rc;
+}
+
+int		ReactorEndpoint::GetRecvData		(char** ppData, int* pnDataCount)
+{
+	*ppData = m_recvQueue.GetWrittenArea ();
+	*pnDataCount = m_recvQueue.GetByteCount ();
+	return 0;
 }

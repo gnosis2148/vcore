@@ -42,21 +42,24 @@ int	SocketReactor::Run	()
 		{
 			LOG_Error "select() error %d", OS_GetLastSocketError () LOG_END;
 		}
-
-		rc = ProcessFdSets (&reads, &writes, &excepts);
+		else
+		{
+			rc = ProcessFdSets (&reads, &writes, &excepts);
+		}
 	}
 	return 0;
 }
 
 int	SocketReactor::ProcessFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts)
 {
-	std::list<ReactorEndpoint*>::const_iterator it = m_endpoints.begin ();
+	LOG_Debug "enter %s", __FUNCTION__ LOG_END;
+	std::list<ReactorEndpoint*>::iterator it = m_endpoints.begin ();
 	while (it != m_endpoints.end ())
 	{
 		ReactorEndpoint* pEP = *it;
 		if (pEP->GetSocket()->IsInSet (excepts))
 		{
-			HandleError (pEP);
+			HandleError (it, pEP);
 		}
 		else // reads or writes
 		{
@@ -78,6 +81,7 @@ int	SocketReactor::ProcessFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts
 		} // else: reads or writes
 		*it++;
 	}
+	LOG_Debug "exit %s", __FUNCTION__ LOG_END;
 	return 0;
 }
 
@@ -85,6 +89,7 @@ int	SocketReactor::ProcessFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts
 
 int	SocketReactor::UpdateFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts)
 {
+	LOG_Debug "enter %s", __FUNCTION__ LOG_END;
 	FD_ZERO (reads);
 	FD_ZERO (writes);
 	FD_ZERO (excepts);
@@ -117,7 +122,11 @@ int	SocketReactor::UpdateFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts)
 			}
 			else // invalid
 			{
-				if (pEP->ShouldReconnect ())
+				if (pEP->GetType () == ReactorEndpoint::EPTYPE_SERVER_CLIENT)
+				{
+					HandleError (it, pEP);
+				}
+				else if (pEP->ShouldReconnect ())
 				{
 					pEP->GetSocket()->Connect ();
 				}
@@ -126,6 +135,7 @@ int	SocketReactor::UpdateFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts)
 
 		*it++;
 	}
+	LOG_Debug "exit %s", __FUNCTION__ LOG_END;
 	return 0;
 }
 
@@ -146,13 +156,13 @@ int	SocketReactor::AddEndpoint		(ReactorEndpoint* pEndpoint)
 	return 0;
 }
 
-int	SocketReactor::HandleError			(ReactorEndpoint* pEP)
+int	SocketReactor::HandleError			(std::list<ReactorEndpoint*>::iterator& it, ReactorEndpoint* pEP)
 {
 	LOG_Debug "HandleError 0x%x", pEP LOG_END;
 	if (pEP->GetType () == ReactorEndpoint::EPTYPE_SERVER_CLIENT)
 	{
 		pEP->Shutdown ();
-		m_endpoints.remove (pEP);
+		it = m_endpoints.erase (it);
 		delete pEP;
 	}
 	else if (pEP->GetType () == ReactorEndpoint::EPTYPE_SERVER)
@@ -169,9 +179,9 @@ int	SocketReactor::HandleError			(ReactorEndpoint* pEP)
 
 int	SocketReactor::HandleNewConnection	(ReactorEndpoint* pEP)
 {
-	LOG_Debug "HandleNewConnection 0x%x", pEP LOG_END;
 	OS_Socket* pSock = pEP->GetSocket()->Accept();
 	ReactorEndpoint* pConn = new ReactorEndpoint (pSock);
+	LOG_Debug "HandleNewConnection (0x%x) new is 0x%x", pEP, pConn LOG_END;
 	OS_Abort_If ((pConn==NULL));
 	AddEndpoint (pConn);
 	return 0;
@@ -180,7 +190,25 @@ int	SocketReactor::HandleNewConnection	(ReactorEndpoint* pEP)
 int	SocketReactor::HandleRead			(ReactorEndpoint* pEP)
 {
 	LOG_Debug "HandleRead 0x%x", pEP LOG_END;
-	
+	int rc = pEP->Read ();
+	if (rc <= 0)
+	{
+		if (pEP->GetType () == ReactorEndpoint::EPTYPE_SERVER_CLIENT)
+		{
+			LOG_Debug "Invalidate EP 0x%x", pEP LOG_END;
+			pEP->Shutdown ();
+			//m_endpoints.remove (pEP);
+		}
+	}
+	else // valid data
+	{
+		int nDataCount;
+		char* pRecvData;
+		pEP->GetRecvData (&pRecvData, &nDataCount);
+		
+		bool bMessageComplete = IsMessageComplete (pEP, pRecvData, &nDataCount);
+		
+	}
 	return 0;
 }
 
@@ -195,7 +223,12 @@ int	SocketReactor::OnConnect	(ReactorEndpoint* pOriginatorEP, ReactorEndpoint* p
 	return 0;
 }
 
-int	SocketReactor::OnReceive	(ReactorEndpoint* pOriginatorEP, ReactorEndpoint* pNewEP)
+bool	SocketReactor::IsMessageComplete	(ReactorEndpoint* pOrigEP, char* pData, int* pnDataCountBytes)
+{
+	return false;
+}
+
+int	SocketReactor::OnReceive			(ReactorEndpoint* pOrigEP, char* pData, int nDataCountBytes, bool bMessageComplete)
 {
 	return 0;
 }

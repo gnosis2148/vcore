@@ -16,7 +16,7 @@ class	DataQueue
 {
 protected:
 	char*	m_pData;
-	int		m_pTotalSize;
+	int		m_nTotalSize;
 	int		m_nReadIndex;
 	int		m_nWriteIndex;
 public:
