@@ -34,25 +34,42 @@ int		DataQueue::AllocateMemory		(int nSizeBytes)
 	return 0;
 }
 
-int		DataQueue::Write				(void* pData, int nDataSizeBytes)
+
+int		DataQueue::GetByteCount			()
 {
 	return 0;
 }
 
-void*	DataQueue::Read					(int nBytes)
+char*	DataQueue::GetWrittenArea		()
 {
-	return 0;
-}
-
-int		DataQueue::GetByteCount	()
-{
-	return 0;
+	return NULL;
 }
 
 int		DataQueue::GetFreeByteCount		()
 {
 	return 0;
 }
+
+char*	DataQueue::GetFreeArea			()
+{
+	return NULL;
+}
+
+int		DataQueue::GetFreeContByteCount	()
+{
+	return 0;
+}
+
+int		DataQueue::ReadDone				(int nByteCount)
+{
+	return 0;
+}
+
+int		DataQueue::WriteDone			(int nByteCount)
+{
+	return 0;
+}
+
 
 int		DataQueue::Reset				()
 {

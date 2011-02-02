@@ -29,6 +29,8 @@ public:
 	virtual int			Create		() = 0;
 	virtual int			Close		() = 0;
 	virtual OS_Socket*	Accept		() = 0;
+	virtual int			Read		(void* pDestBuffer, int nMaxBytesToRead) = 0;
+	
 public:
 	bool	IsValid			()	{ return m_bIsValid; }
 	void	ResetState		();

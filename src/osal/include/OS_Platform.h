@@ -17,6 +17,8 @@
 int	OS_PlatformInit	();
 #endif
 
+#include <OS_Global.h>
+
 //--------------- Object instantiation -----------------------
 #include <OS_Socket.h>
 OS_Socket*	OS_CreateSocket ();

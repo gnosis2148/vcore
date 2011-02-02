@@ -48,12 +48,14 @@ public:
 	int				Init			(); // alloc the data queue
 	int				Shutdown		(); // close the socket
 	int				Reset			(); // reset state but keep the socket open
+	int				HandleError		();
 	const char*		GetLastError	() { return m_szLastError; }
 	bool			NeedsRead		();
 	bool			NeedsWrite		();
 	EndpointType	GetType			() { return m_type; }
 	OS_Socket*		GetSocket		() { return m_pSock; }
 	bool			ShouldReconnect	();
+	int				Read			();
 protected:
 	int		ParseAddress		(const char* szAddress, EndpointType epType);
 };

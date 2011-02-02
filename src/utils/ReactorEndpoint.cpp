@@ -6,8 +6,10 @@
 *-----------------------------------------------------------*/
 
 //-------------------- Include files -------------------------
+#include <Utils.h>
 #include <ReactorEndpoint.h>
 #include <SimpleParser.h>
+
 //-------------------- Constants and Definitions -------------
 
 //-------------------- Implementation -------------------------
@@ -62,6 +64,20 @@ int	ReactorEndpoint::Init		() // alloc the data queue
 	return 0;
 }
 
+int	ReactorEndpoint::HandleError	()
+{
+	LOG_Error "EP 0x%x HandleError", this LOG_END;
+	if (m_type == ReactorEndpoint::EPTYPE_SERVER_CLIENT)
+	{
+		Shutdown ();
+	}
+	else
+	{
+		Reset ();
+	}
+	return 0;
+}
+
 int	ReactorEndpoint::Shutdown		()
 {
 	m_pSock->Close ();
@@ -107,3 +123,17 @@ bool	ReactorEndpoint::ShouldReconnect	()
 	return false;
 }
 
+int		ReactorEndpoint::Read			()
+{
+	int nSpaceAvail = m_recvQueue.GetFreeContByteCount ();
+	int rc = m_pSock->Read (m_recvQueue.GetFreeArea (), nSpaceAvail);
+	if (rc < 0)
+	{
+		HandleError ();
+		return -1;
+	}
+
+	m_recvQueue.WriteDone (rc);
+	LOG_Debug "Read %d bytes from 0x%x rc=%d", nSpaceAvail, this, rc LOG_END;
+	return rc;
+}

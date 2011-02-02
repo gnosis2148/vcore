@@ -218,6 +218,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\src\utils\Log.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\utils\Log.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\src\utils\ReactorEndpoint.cpp"
 					>
 				</File>
@@ -241,12 +249,20 @@
 					RelativePath="..\..\src\utils\SocketReactor.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\src\utils\Utils.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="osal"
 				>
 				<File
 					RelativePath="..\..\src\osal\include\OS_Assert.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\src\osal\include\OS_Global.h"
 					>
 				</File>
 				<File
@@ -268,6 +284,10 @@
 				<Filter
 					Name="win32"
 					>
+					<File
+						RelativePath="..\..\src\osal\win32\OS_Global_win32.cpp"
+						>
+					</File>
 					<File
 						RelativePath="..\..\src\osal\win32\OS_Platform_win32.cpp"
 						>

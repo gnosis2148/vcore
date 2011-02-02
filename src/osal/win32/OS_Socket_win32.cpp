@@ -66,7 +66,7 @@ int		OS_SocketWin32::AddToSet	(void* pSet)
 bool	OS_SocketWin32::IsInSet		(void* pSet)
 {
 	FD_SET* pset = (FD_SET*)pSet;
-	return FD_ISSET (m_sock, pset);
+	return FD_ISSET (m_sock, pset)?true:false;
 }
 
 
@@ -106,6 +106,13 @@ OS_Socket*	OS_SocketWin32::Accept		()
 		delete pNewSock;
 		return NULL;
 	}
+	pNewSock->m_bIsValid = true;
 	return pNewSock;
+}
+
+int			OS_SocketWin32::Read		(void* pDestBuffer, int nMaxBytesToRead)
+{
+	int rc = recv (m_sock, (char*)pDestBuffer, nMaxBytesToRead, 0);
+	return rc;
 }
 

@@ -8,7 +8,7 @@
 //-------------------- Include files -------------------------
 #include <OS_Assert.h>
 #include <SocketReactor.h>
-#include <OS_Platform.h>
+#include <Utils.h>
 
 //-------------------- Implementation ------------------------
 SocketReactor::SocketReactor	()
@@ -34,7 +34,14 @@ int	SocketReactor::Run	()
 		rc = UpdateFdSets (&reads, &writes, &excepts);
 		OS_Abort_If ((rc<0));
 		
+		LOG_Debug "Before select total sockets %d", m_endpoints.size() LOG_END;
 		nSockCount = select (0, &reads, &writes, &excepts, NULL);
+		LOG_Debug "Out of select %d", nSockCount LOG_END;
+
+		if (nSockCount < 0)
+		{
+			LOG_Error "select() error %d", OS_GetLastSocketError () LOG_END;
+		}
 
 		rc = ProcessFdSets (&reads, &writes, &excepts);
 	}
@@ -43,7 +50,6 @@ int	SocketReactor::Run	()
 
 int	SocketReactor::ProcessFdSets	(fd_set* reads, fd_set* writes, fd_set* excepts)
 {
-	int rc;
 	std::list<ReactorEndpoint*>::const_iterator it = m_endpoints.begin ();
 	while (it != m_endpoints.end ())
 	{
@@ -142,6 +148,7 @@ int	SocketReactor::AddEndpoint		(ReactorEndpoint* pEndpoint)
 
 int	SocketReactor::HandleError			(ReactorEndpoint* pEP)
 {
+	LOG_Debug "HandleError 0x%x", pEP LOG_END;
 	if (pEP->GetType () == ReactorEndpoint::EPTYPE_SERVER_CLIENT)
 	{
 		pEP->Shutdown ();
@@ -162,6 +169,7 @@ int	SocketReactor::HandleError			(ReactorEndpoint* pEP)
 
 int	SocketReactor::HandleNewConnection	(ReactorEndpoint* pEP)
 {
+	LOG_Debug "HandleNewConnection 0x%x", pEP LOG_END;
 	OS_Socket* pSock = pEP->GetSocket()->Accept();
 	ReactorEndpoint* pConn = new ReactorEndpoint (pSock);
 	OS_Abort_If ((pConn==NULL));
@@ -171,6 +179,8 @@ int	SocketReactor::HandleNewConnection	(ReactorEndpoint* pEP)
 
 int	SocketReactor::HandleRead			(ReactorEndpoint* pEP)
 {
+	LOG_Debug "HandleRead 0x%x", pEP LOG_END;
+	
 	return 0;
 }
 

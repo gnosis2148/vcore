@@ -24,6 +24,7 @@ public:
 	virtual bool		IsInSet		(void* pSet);
 	virtual int			Close		();
 	virtual OS_Socket*	Accept		();
+	virtual int			Read		(void* pDestBuffer, int nMaxBytesToRead);
 
 };
 

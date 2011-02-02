@@ -23,12 +23,15 @@ public:
 	DataQueue	();
 	~DataQueue	();
 public:
-	int		Reset				();
-	int		AllocateMemory		(int nSizeBytes);
-	int		Write				(void* pData, int nDataSizeBytes);
-	void*	Read				(int nBytes);
-	int		GetByteCount		();
-	int		GetFreeByteCount	();
+	int		Reset					();
+	int		AllocateMemory			(int nSizeBytes);
+	int		GetByteCount			();
+	char*	GetWrittenArea			();
+	int		GetFreeByteCount		();
+	char*	GetFreeArea				();
+	int		GetFreeContByteCount	();
+	int		ReadDone				(int nByteCount);
+	int		WriteDone				(int nByteCount);
 };
 
 #endif // _DATA_QUEUE_H_
