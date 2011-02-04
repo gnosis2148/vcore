@@ -12,6 +12,7 @@
 #include <OS_Platform.h>
 #include <OS_Assert.h>
 #include <DataQueue.h>
+#include <WireProtocol.h>
 //-------------------- Constants and Definitions -------------
 #define REACTOR_ENDPOINT_MAX_ADDRESS_LENGTH	256
 #define REACTOR_ENDPOINT_MAX_TRANSPORT_NAME_LENGTH 8
@@ -36,6 +37,7 @@ protected:
 
 	int				m_nPortNum;
 	char			m_szLastError [OS_ERROR_MESSAGE_LENGTH];
+	WireProtocol*	m_pWireProtocol;
 protected: //------------- config options --------
 	int		m_nSendQueueSize;
 	int		m_nRecvQueueSize;
@@ -57,6 +59,7 @@ public:
 	bool			ShouldReconnect	();
 	int				Read			();
 	int				GetRecvData		(char** ppData, int* pnDataCount);
+	void			SetWireProtocol	(WireProtocol* pProtocol);
 protected:
 	int		ParseAddress		(const char* szAddress, EndpointType epType);
 };

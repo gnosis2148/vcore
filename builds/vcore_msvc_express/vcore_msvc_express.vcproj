@@ -253,6 +253,10 @@
 					RelativePath="..\..\src\utils\Utils.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\src\utils\WireProtocol.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="osal"

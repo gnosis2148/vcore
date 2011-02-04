@@ -28,6 +28,12 @@ ReactorEndpoint::ReactorEndpoint	(OS_Socket* pSock)
 	m_pSock = pSock;
 	m_type = ReactorEndpoint::EPTYPE_SERVER_CLIENT;
 	m_bAutoReconnect = false;
+	m_pWireProtocol = NULL;
+}
+
+void	ReactorEndpoint::SetWireProtocol	(WireProtocol* pProtocol)
+{
+	m_pWireProtocol = pProtocol;
 }
 
 

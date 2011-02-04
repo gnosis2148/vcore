@@ -30,6 +30,8 @@ int		VCoreLogger::Init	(VCoreConfigOptions* pOptions)
 	m_pServerEP = new ReactorEndpoint (szLoggerAddress, ReactorEndpoint::EPTYPE_SERVER);
 	OS_AssertMsg ((m_pServerEP!=NULL), "Out of memory");
 
+	
+
 	rc = this->AddEndpoint (m_pServerEP);
 	OS_AssertMsg ((rc >= 0), this->GetLastError ());
 
